@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>데이터셋 정의서 키워드,설명 생성기 테스트</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/variable/pretendardvariable.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #08090a;
+        --paper: #101112;
+        --ink: #f7f8f8;
+        --muted: #8a8f98;
+        --border: #23252a;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Pretendard Variable", "Pretendard", sans-serif;
+        color: #f7f8f8;
+        background-color: #08090a;
+        min-height: 100vh;
+      }
+      header {
+        padding: 48px 24px 24px;
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Pretendard Variable", "Pretendard", sans-serif;
+        font-size: clamp(30px, 4.5vw, 44px);
+        letter-spacing: -0.03em;
+        color: #f7f8f8;
+      }
+      p.lead {
+        margin: 0;
+        color: #8a8f98;
+        font-size: 15px;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 16px 24px 64px;
+      }
+      .panel {
+        background: #101112;
+        border: 1px solid #23252a;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+        color: var(--ink);
+      }
+      .controls {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+      }
+      .card-box {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 18px;
+        background: #161718;
+        width: 100%;
+      }
+      .file-input {
+        width: 100%;
+      }
+      .file-input input[type="file"] {
+        width: 100%;
+        color: #f7f8f8;
+        font-size: 14px;
+      }
+      .file-input input[type="file"]::file-selector-button {
+        border: 1px solid #e6e6e6;
+        background: #e6e6e6;
+        color: #08090a;
+        padding: 8px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-right: 12px;
+      }
+      .file-input input[type="file"]::file-selector-button:hover {
+        opacity: 0.9;
+      }
+      .card-divider {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 16px 0;
+      }
+      .action-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        width: 100%;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .action-left,
+      .action-right {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .action-left {
+        margin-left: 10px;
+      }
+      .field-row {
+        margin-top: 12px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .field-row > label {
+        flex: 0 0 auto;
+        min-width: 0;
+      }
+      label {
+        font-size: 12px;
+        color: #8a8f98;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      label input {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 14px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.02);
+        color: #f7f8f8;
+        font-family: inherit;
+      }
+      label input:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .checkbox {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        flex-direction: row;
+        color: #d0d6e0;
+      }
+      .checkbox input {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        accent-color: #5e6ad2;
+      }
+      .segmented {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-self: flex-start;
+      }
+      .header-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .header-row > label {
+        flex: 0 0 auto;
+        min-width: 0;
+      }
+      #orgInput {
+        width: 210px;
+      }
+      #sheetInput,
+      #groupKeyInput,
+      #headerRangeInput {
+        width: 150px;
+      }
+      .segmented-title {
+        font-size: 12px;
+        color: #8a8f98;
+        align-self: flex-start;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
+      }
+      .segmented-row {
+        display: inline-flex;
+        border: 1px solid #3e3e44;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 36px;
+        align-items: stretch;
+      }
+      .segmented-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .segmented-option {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        color: #d0d6e0;
+        background: #161718;
+        cursor: pointer;
+        border-right: 1px solid #3e3e44;
+        display: inline-flex;
+        align-items: center;
+        height: 100%;
+      }
+      .segmented-option:last-child {
+        border-right: none;
+      }
+      .segmented-option input:checked + span {
+        background: #e6e6e6;
+        color: #08090a;
+      }
+      .segmented-option span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 0 12px;
+        line-height: 1;
+      }
+      .toggle-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .error {
+        color: #e3484e;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+      .hidden {
+        display: none;
+      }
+      .header-range-hidden {
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .file-input input {
+        width: 100%;
+      }
+      button {
+        border: none;
+        padding: 12px 18px;
+        background: #e6e6e6;
+        color: #08090a;
+        border-radius: 999px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+      button:disabled {
+        background: #3e3e44;
+        color: #8a8f98;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .result {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #5e6ad2;
+        color: #f7f8f8;
+        font-weight: 700;
+        font-size: 12px;
+      }
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .card {
+        background: #161718;
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        opacity: 0;
+        transform: translateY(12px);
+        animation: rise 0.5s ease forwards;
+        color: #f7f8f8;
+      }
+      .card h3 {
+        margin: 8px 4px;
+        font-size: 16px;
+        color: #f7f8f8;
+      }
+      .description {
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #d0d6e0;
+      }
+      .keywords {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .table-wrap {
+        margin-top: 12px;
+        overflow-x: auto;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        background: #101112;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      th {
+        background: #161718;
+        font-weight: 700;
+        color: #d0d6e0;
+      }
+      td {
+        color: #d0d6e0;
+      }
+      .tag {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #d0d6e0;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+      .divider {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 20px 0;
+      }
+      pre {
+        background: #08090a;
+        color: #d0d6e0;
+        padding: 12px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .data-block {
+        margin: 10px 0;
+      }
+      details {
+        margin: 8px 0 0;
+      }
+      summary {
+        cursor: pointer;
+        color: #5e6ad2;
+        font-weight: 600;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      @media (max-width: 720px) {
+        .controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>데이터셋 정의서 키워드,설명 생성기 테스트</h1>
+      <p class="lead">xlsx를 올리면 번호별로 묶어 키워드/설명 초안을 생성합니다.</p>
+    </header>
+    <main>
+      <section class="panel">
+        <div class="controls">
+          <div class="card-box file-input">
+            <input id="fileInput" type="file" accept=".xlsx,.csv" />
+            <hr id="cardDivider" class="card-divider hidden" />
+            <div id="advancedCard" class="hidden">
+              <div id="advancedControls" class="field-row">
+              <label>
+                기관명
+                <input
+                  id="orgInput"
+                  type="text"
+                  placeholder="예) 한국식품산업클러스터진흥원"
+                  required
+                />
+                <span id="orgError" class="error hidden">필수 입력 항목입니다.</span>
+              </label>
+              <label>
+                시트명
+                <input id="sheetInput" type="text" placeholder="기본값: 첫 시트" />
+              </label>
+                <label>
+                  그룹 기준키
+                  <input id="groupKeyInput" type="text" placeholder="기본값: 번호" />
+                </label>
+                <div class="header-row">
+                  <div class="segmented">
+                    <span class="segmented-title">헤더 설정</span>
+                    <div class="segmented-row">
+                      <label class="segmented-option">
+                        <input id="headerAuto" type="radio" name="headerMode" checked />
+                        <span>자동</span>
+                      </label>
+                      <label class="segmented-option">
+                        <input id="headerManual" type="radio" name="headerMode" />
+                        <span>직접</span>
+                      </label>
+                    </div>
+                  </div>
+                  <label id="headerRangeLabel" class="header-range-hidden">
+                  헤더 시작~끝 셀
+                  <input id="headerRangeInput" type="text" placeholder="예) A1:G2" />
+                </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="actionButtons" class="action-buttons hidden">
+            <div class="action-left">
+              <label class="checkbox">
+                <input id="mockInput" type="checkbox" checked />
+                모의 테스트
+              </label>
+              <label class="checkbox">
+                <input id="includePromptInput" type="checkbox" />
+                LLM 프롬프트 보기
+              </label>
+              <label class="checkbox">
+                <input id="includeRowsInput" type="checkbox" />
+                원본 행 보기
+              </label>
+            </div>
+            <div class="action-right">
+              <button id="downloadBtn" disabled>결과 xlsx 다운로드</button>
+              <button id="runBtn" disabled>생성하기</button>
+            </div>
+          </div>
+        </div>
+        <div class="result hidden" id="result"></div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+      const fileInput = document.getElementById("fileInput");
+      const runBtn = document.getElementById("runBtn");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const result = document.getElementById("result");
+      const sheetInput = document.getElementById("sheetInput");
+      const groupKeyInput = document.getElementById("groupKeyInput");
+      const orgInput = document.getElementById("orgInput");
+      const headerAuto = document.getElementById("headerAuto");
+      const headerManual = document.getElementById("headerManual");
+      const headerRangeLabel = document.getElementById("headerRangeLabel");
+      const headerRangeInput = document.getElementById("headerRangeInput");
+      const mockInput = document.getElementById("mockInput");
+      const includePromptInput = document.getElementById("includePromptInput");
+      const includeRowsInput = document.getElementById("includeRowsInput");
+      const advancedControls = document.getElementById("advancedControls");
+      const advancedCard = document.getElementById("advancedCard");
+      const actionButtons = document.getElementById("actionButtons");
+      const cardDivider = document.getElementById("cardDivider");
+      const orgError = document.getElementById("orgError");
+      function toggleHeaderInputs() {
+        headerRangeLabel.classList.toggle("header-range-hidden", !headerManual.checked);
+      }
+      headerAuto.addEventListener("change", toggleHeaderInputs);
+      headerManual.addEventListener("change", toggleHeaderInputs);
+      toggleHeaderInputs();
+      let lastOutput = null;
+      fileInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) {
+          runBtn.disabled = true;
+          downloadBtn.disabled = true;
+          advancedCard.classList.add("hidden");
+          cardDivider.classList.add("hidden");
+          actionButtons.classList.add("hidden");
+          result.classList.add("hidden");
+          result.innerHTML = "";
+          return;
+        }
+        runBtn.disabled = false;
+        advancedCard.classList.remove("hidden");
+        cardDivider.classList.remove("hidden");
+        actionButtons.classList.remove("hidden");
+        result.innerHTML = `<span class="badge">${file.name} 선택됨</span>`;
+      });
+      orgInput.addEventListener("input", () => {
+        if (orgInput.value.trim()) {
+          orgError.classList.add("hidden");
+        }
+      });
+
+      runBtn.addEventListener("click", async () => {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+        if (!orgInput.value.trim()) {
+          orgError.classList.remove("hidden");
+          orgInput.focus();
+          return;
+        }
+        runBtn.disabled = true;
+          result.classList.remove("hidden");
+          result.innerHTML = '<span class="badge">처리 중...</span>';
+
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          if (sheetInput.value.trim()) formData.append("sheet", sheetInput.value.trim());
+          if (groupKeyInput.value.trim()) formData.append("group_key", groupKeyInput.value.trim());
+          if (orgInput.value.trim()) formData.append("org_name", orgInput.value.trim());
+          if (mockInput.checked) formData.append("mock", "true");
+          if (headerManual.checked && headerRangeInput.value.trim()) {
+            const [start, end] = headerRangeInput.value.trim().split(":");
+            if (start && end) {
+              formData.append("header_start", start.trim());
+              formData.append("header_end", end.trim());
+            }
+          }
+          if (includePromptInput.checked) formData.append("include_prompt", "true");
+          if (includeRowsInput.checked) {
+            formData.append("include_rows", "true");
+            formData.append("include_debug", "true");
+          }
+
+          const response = await fetch("/api/summarize", {
+            method: "POST",
+            body: formData,
+          });
+          if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.detail || "요청 실패");
+          }
+          const output = await response.json();
+          if (Array.isArray(output)) {
+            lastOutput = output;
+          } else if (output && Array.isArray(output.results)) {
+            lastOutput = output.results;
+          } else {
+            lastOutput = [];
+          }
+          downloadBtn.disabled = !lastOutput.length;
+          renderOutput(output);
+        } catch (err) {
+          result.classList.remove("hidden");
+          result.innerHTML = `<span class="badge">오류: ${err.message}</span>`;
+        } finally {
+          runBtn.disabled = false;
+        }
+      });
+
+      downloadBtn.addEventListener("click", () => {
+        if (!Array.isArray(lastOutput) || lastOutput.length === 0) return;
+        const rows = lastOutput.map((item) => ({
+          row_index: item.row_index,
+          group_key: item.group_key,
+          keywords: Array.isArray(item.keywords) ? item.keywords.join(", ") : item.keywords || "",
+          description: item.description || "",
+          common: item.common ? JSON.stringify(item.common) : "",
+          columns: Array.isArray(item.columns) ? item.columns.join(" | ") : "",
+        }));
+        const worksheet = XLSX.utils.json_to_sheet(rows);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "results");
+        XLSX.writeFile(workbook, "results.xlsx");
+      });
+
+      function renderOutput(output) {
+        const list = document.createElement("div");
+        list.className = "list";
+        const items = Array.isArray(output)
+          ? output
+          : output && Array.isArray(output.results)
+            ? output.results
+            : [];
+        items.forEach((item, index) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.style.animationDelay = `${Math.min(index * 0.06, 0.6)}s`;
+          const title = document.createElement("h3");
+          const datasetName = item.common?.["개방 데이터셋명"];
+          const groupNumber = item.common?.["번호"] || item.group_key;
+          if (groupNumber && datasetName) {
+            title.textContent = `${groupNumber}. ${datasetName}`;
+          } else if (datasetName) {
+            title.textContent = datasetName;
+          } else {
+            title.textContent = `그룹 ${item.group_key}`;
+          }
+          const keywords = document.createElement("div");
+          keywords.className = "keywords";
+          const words = Array.isArray(item.keywords)
+            ? item.keywords
+            : item.keywords
+              ? [String(item.keywords)]
+              : [];
+          words.forEach((word) => {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = word;
+            keywords.appendChild(tag);
+          });
+          const desc = document.createElement("p");
+          desc.className = "description";
+          if (typeof item.description === "string") {
+            desc.textContent = item.description || "(설명 없음)";
+          } else if (item.description) {
+            desc.textContent = JSON.stringify(item.description);
+          } else {
+            desc.textContent = "(설명 없음)";
+          }
+          const raw = document.createElement("pre");
+          raw.className = "data-block";
+          raw.textContent = JSON.stringify(item, null, 2);
+          const rawDetails = document.createElement("details");
+          const rawSummary = document.createElement("summary");
+          rawSummary.textContent = "JSON 원문";
+          rawDetails.append(rawSummary, raw);
+          let promptBlock = null;
+          if (item.prompt) {
+            promptBlock = document.createElement("details");
+            const promptSummary = document.createElement("summary");
+            promptSummary.textContent = "LLM 프롬프트";
+            const promptPre = document.createElement("pre");
+            promptPre.textContent = item.prompt;
+            promptBlock.append(promptSummary, promptPre);
+          }
+          if (!words.length) {
+            const emptyTag = document.createElement("span");
+            emptyTag.className = "tag";
+            emptyTag.textContent = "(키워드 없음)";
+            keywords.appendChild(emptyTag);
+          }
+          const divider1 = document.createElement("hr");
+          divider1.className = "divider";
+          const divider2 = document.createElement("hr");
+          divider2.className = "divider";
+          card.append(title, divider1, keywords, desc, divider2);
+          if (Array.isArray(item.rows) && item.rows.length) {
+            const tableDetails = document.createElement("details");
+            const tableSummary = document.createElement("summary");
+            tableSummary.textContent = "원본 행 미리보기 (최대 8행)";
+            const tableWrap = document.createElement("div");
+            tableWrap.className = "table-wrap";
+            const table = document.createElement("table");
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+            const headers =
+              item.debug?.headers_preview?.length
+                ? item.debug.headers_preview
+                : Object.keys(item.rows[0]).filter((key) => !key.startsWith("__"));
+            const headerLabels =
+              headers.length > 0
+                ? headers
+                : item.rows[0].__raw_values__
+                  ? item.rows[0].__raw_values__.map((_, idx) => `Column${idx + 1}`)
+                  : [];
+            headerLabels.forEach((label) => {
+              const th = document.createElement("th");
+              th.textContent = label;
+              headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            const tbody = document.createElement("tbody");
+            item.rows.slice(0, 8).forEach((row) => {
+              const tr = document.createElement("tr");
+              const values = row.__raw_values__?.length
+                ? row.__raw_values__
+                : headerLabels.map((key) => row[key] ?? "");
+              values.forEach((value) => {
+                const td = document.createElement("td");
+                td.textContent = value == null ? "" : String(value);
+                tr.appendChild(td);
+              });
+              tbody.appendChild(tr);
+            });
+            table.append(thead, tbody);
+            tableWrap.appendChild(table);
+            tableDetails.append(tableSummary, tableWrap);
+            card.append(tableDetails);
+          }
+          if (promptBlock) card.append(promptBlock);
+          card.append(rawDetails);
+          list.appendChild(card);
+        });
+        result.innerHTML = "";
+        result.appendChild(list);
+        result.classList.remove("hidden");
+      }
+    </script>
+  </body>
+</html>
